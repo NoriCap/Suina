@@ -4,7 +4,7 @@ import asyncio
 import discord
 from discord import Intents, Message
 from discord.ext import commands
-
+from TTS import tts
 def build_intents() -> Intents:
     intents = discord.Intents.default()
     intents.messages = True
@@ -33,9 +33,8 @@ class MyClient(discord.Client):
         self.voice_client = await channel.connect()
         
         print("Connected to", channel.name)
-    def speak(self): 
-        source = discord.FFmpegPCMAudio("audio/samples/hello_test.mp3")
-        self.voice_client.play(source, after=lambda e: print("Done", e))
+    def speak(self, model_text: str):
+        tts.speak_streaming(self.voice_client, model_text)
             
     async def on_ready(self):
         print(f"We have logged in as {self.user}")
@@ -58,4 +57,4 @@ class MyClient(discord.Client):
         async with message.channel.typing():
             response = await asyncio.to_thread(self.model.chat, message.content)
         await message.channel.send(response)
-        self.speak()
+        self.speak(response)
