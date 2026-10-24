@@ -3,3 +3,5 @@ __pycache__/
 .env
 SUINA_MEM.db/
 logs/
+context/history.jsonl
+context/old_history_log.jsonl
